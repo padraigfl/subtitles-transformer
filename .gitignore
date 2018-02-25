@@ -62,3 +62,5 @@ typings/
 
 # customs
 testFiles/
+.DS_Store
+**/.DS_Store

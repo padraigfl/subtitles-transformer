@@ -1,5 +1,5 @@
 {
-  "name": "subvert",
+  "name": "subtitles-transformer",
   "version": "0.3.0",
   "description": "A collection of tools for manipulating the time and layout of srt, ssa/ass and sub subtitle files",
   "main": "src/index.js",
