@@ -4,9 +4,13 @@ Subtitling Modifier Package
 A collection of processes for converting and modifying popular subtitle file formats.
 Coded entirely in ES5 with no external production dependencies.
 
+Tests: `npm run mocha`
+Linting is supplied using ESLint with configurations set up to follow ES5 standards
+
+
 ##  Roadmap
 
-### 0
+### Version 0.
 
   1. Reading, writing and parsing for SRT files ✓
   2. Time modifying capabilities
@@ -24,6 +28,7 @@ Coded entirely in ES5 with no external production dependencies.
       - Set a minimum display time
       - Fixed color options
       - Track for overlapping
+      - Maximum offset match, insist of full shift otherwise
       - [add as found in earlier steps]
   7. Split into format specific node modules
   8. (unlikely to be implemented)
@@ -31,6 +36,6 @@ Coded entirely in ES5 with no external production dependencies.
       - file validation
       - better name
 
-### Onwards
+### Version 1. and onwards
 
   CLI application, electron app, verbose feedback, even better name
