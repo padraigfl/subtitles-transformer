@@ -23,7 +23,8 @@ Linting is supplied using ESLint with configurations set up to follow ES5 standa
       - Space conservation efforts
   5. Simple SSA support
   6. Compatibility across file types
-  7. Style refinements
+  7. Possible style refinements (carried across versions)
+      - Refine merging process hugely
       - Set a minimum display time
       - Fixed color options
       - Track for overlapping
