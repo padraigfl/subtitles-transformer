@@ -8,7 +8,7 @@ var timeShift = modifiers.timeShift;
 var toOneLine = modifiers.toOneLine;
 var limitChar = modifiers.limitChar;
 
-describe('modifiers for internal subtitle object', function() {
+describe('Modifiers:', function() {
   var multiple = { start: 72.833, end: 79, text: [ 'A bunch of text', 'two lines worth' ] };
   var longText = {
     start: 102.458,

@@ -12,77 +12,79 @@ var styling = require('../src/srt/styling');
 var isStyled = styling.isStyled;
 var removeStyles = styling.removeStyles;
 
-describe('parseSrt', function () {
-  var obj = [
-    { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] },
-    { start: 102.458, end: 109.417, text: [ 'Sfheee idjfhsa' ] },
-    { start: 115.708, end: 117.75, text: [ 'Oooops' ] }
-  ];
+describe('SRT', function () {
+  describe('parseSrt', function () {
+    var obj = [
+      { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] },
+      { start: 102.458, end: 109.417, text: [ 'Sfheee idjfhsa' ] },
+      { start: 115.708, end: 117.75, text: [ 'Oooops' ] }
+    ];
 
-  it('should srt to object', function () {
-    var x = io.read('./test/dummySubs/3LinesD.srt');
-    var result = parseSrt(x);
-    expect(result).to.deep.equal(obj);
-  });
-
-  it('should object to srt format', function () {
-    var result = subArrayToSrt([obj[0]]);
-    expect(result).to.include(
-      '1\n00:01:12',' 00:01:19', '\nASDFGHJKL\n'
-    ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
-  });
-});
-
-describe('styleSrt', function () {
-  var noStyle = { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] };
-  var underline = { start: 72.833, end: 79, text: [ '<u>ASDFGHJKL</u>' ] };
-  var twoStyle =  { start: 72.833, end: 79, text: [ '<b><a>ASDFGHJKL</u></b>' ] };
-  var fontStyle =  { start: 72.833, end: 79, text: [ '<a>ASDFGHJKL</u>' ] };
-  var threeStyleWithFont = { start: 72.833, end: 79, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
-
-  it('should have no style', function () {
-    expect(isStyled(noStyle.text)).to.equal(false);
-  });
-
-  it('should have a style', function () {
-    expect(isStyled(underline.text)).to.equal(true);
-  });
-
-  describe('adding styles', function() {
-    it('italicize', function () {
-      expect(styling.italicize(noStyle.text[0])).to.equal('<i>'+noStyle.text[0]+'</i>');
+    it('should srt to object', function () {
+      var x = io.read('./test/dummySubs/3LinesD.srt');
+      var result = parseSrt(x);
+      expect(result).to.deep.equal(obj);
     });
-    it('bold', function () {
-      expect(styling.bolden(noStyle.text[0])).to.equal('<b>'+noStyle.text[0]+'</b>');
-    });
-    it('underline', function () {
-      expect(styling.underline(noStyle.text[0])).to.equal('<u>'+noStyle.text[0]+'</u>');
-    });
-    it('font color', function () {
-      expect(styling.color(noStyle.text[0], 'blue'))
-        .to.equal('<font color="blue">'+noStyle.text[0]+'</font>');
+
+    it('should object to srt format', function () {
+      var result = subArrayToSrt([obj[0]]);
+      expect(result).to.include(
+        '1\n00:01:12',' 00:01:19', '\nASDFGHJKL\n'
+      ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
     });
   });
 
-  describe('removing styles', function(){
-    it('return as if when no styles', function(){
-      expect(removeStyles(noStyle.text[0])).to.equal(noStyle.text[0]);
+  describe('styleSrt', function () {
+    var noStyle = { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] };
+    var underline = { start: 72.833, end: 79, text: [ '<u>ASDFGHJKL</u>' ] };
+    var twoStyle =  { start: 72.833, end: 79, text: [ '<b><a>ASDFGHJKL</u></b>' ] };
+    var fontStyle =  { start: 72.833, end: 79, text: [ '<a>ASDFGHJKL</u>' ] };
+    var threeStyleWithFont = { start: 72.833, end: 79, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
+
+    it('should have no style', function () {
+      expect(isStyled(noStyle.text)).to.equal(false);
     });
 
-    it('removing basic styles', function(){
-      expect(removeStyles(underline.text[0])).to.equal(noStyle.text[0]);
+    it('should have a style', function () {
+      expect(isStyled(underline.text)).to.equal(true);
     });
 
-    it('removing font color styles', function(){
-      expect(removeStyles(fontStyle.text[0])).to.equal(noStyle.text[0]);
+    describe('adding styles', function() {
+      it('italicize', function () {
+        expect(styling.italicize(noStyle.text[0])).to.equal('<i>'+noStyle.text[0]+'</i>');
+      });
+      it('bold', function () {
+        expect(styling.bolden(noStyle.text[0])).to.equal('<b>'+noStyle.text[0]+'</b>');
+      });
+      it('underline', function () {
+        expect(styling.underline(noStyle.text[0])).to.equal('<u>'+noStyle.text[0]+'</u>');
+      });
+      it('font color', function () {
+        expect(styling.color(noStyle.text[0], 'blue'))
+          .to.equal('<font color="blue">'+noStyle.text[0]+'</font>');
+      });
     });
 
-    it('removes multiple styles', function(){
-      expect(removeStyles(twoStyle.text[0])).to.equal(noStyle.text[0]);
-    });
+    describe('removing styles', function(){
+      it('return as if when no styles', function(){
+        expect(removeStyles(noStyle.text[0])).to.equal(noStyle.text[0]);
+      });
 
-    it('removes multiple styles inc. color', function(){
-      expect(removeStyles(threeStyleWithFont.text[0])).to.equal(noStyle.text[0]);
+      it('removing basic styles', function(){
+        expect(removeStyles(underline.text[0])).to.equal(noStyle.text[0]);
+      });
+
+      it('removing font color styles', function(){
+        expect(removeStyles(fontStyle.text[0])).to.equal(noStyle.text[0]);
+      });
+
+      it('removes multiple styles', function(){
+        expect(removeStyles(twoStyle.text[0])).to.equal(noStyle.text[0]);
+      });
+
+      it('removes multiple styles inc. color', function(){
+        expect(removeStyles(threeStyleWithFont.text[0])).to.equal(noStyle.text[0]);
+      });
     });
   });
 });

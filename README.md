@@ -21,7 +21,6 @@ Linting is supplied using ESLint with configurations set up to follow ES5 standa
   4. Subtitle merging
       - Time pairing
       - Space conservation efforts
-      - Styling
   5. Simple SSA support
   6. Compatibility across file types
   7. Style refinements
