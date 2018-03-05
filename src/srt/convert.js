@@ -1,6 +1,6 @@
 'use strict';
 
-function secondsToSrtTime(seconds) {
+function secondsToSrtTime(seconds) { // TODO - needs tests
   var padder;
   var split = [60*60, 60, 1, 0.001].map( function (d, i) {
     var value = parseInt(seconds / d);
@@ -15,7 +15,7 @@ function secondsToSrtTime(seconds) {
     }
     return padder;
   });
-  return split[0] + ':' + split[1] + ':' + split[2] + ':' + split[3];
+  return split[0] + ':' + split[1] + ':' + split[2] + ',' + split[3];
 }
 
 function getTimeLine(start, end) {
