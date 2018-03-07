@@ -2,9 +2,10 @@
 
 function secondsToSsaTime(seconds) {
   var padder;
-  var split = [60*60, 60, 1, 0.01].map( function (d, i) {
+  var split = [60*60, 60, 1, 0.001].map( function (d, i) {
     var value = parseInt(seconds / d);
     seconds = seconds - (value * d);
+    seconds = Math.round(seconds*100)/100; // TODO, be less hacky
     padder = value.toString();
 
     if (padder.length < 2) {
@@ -15,7 +16,7 @@ function secondsToSsaTime(seconds) {
     }
     return padder;
   });
-  return split[0] + ':' + split[1] + ':' + split[2] + '.' + split[3];
+  return split[0] + ':' + split[1] + ':' + split[2] + '.' + split[3].substring(0, 2);
 }
 
 function buildHeading() {
@@ -36,7 +37,7 @@ function buildStyles() {
 
 function buildEventsHeading() {
   return '[Events]' + '\n' +
-    'Format: Marked, Name, MarginL, MarginR, MarginV, PrimaryEffect, Style, Start, End, Text';
+    'Format: Marked, Name, MarginL, MarginR, MarginV, PrimaryEffect, Style, Start, End, Text\n';
 }
 
 function buildText(text, newLine) {
@@ -82,5 +83,12 @@ function subArrayToSsa(subArray) {
 
 module.exports = {
   toSrt: subArrayToSsa,
-
+  secondsToSsaTime: secondsToSsaTime,
+  buildDialogue: buildDialogue,
+  buildHeading: buildHeading,
+  buildEventsHeading: buildEventsHeading,
+  buildText: buildText,
+  subToSsa: subToSsa,
+  subArrayToSsa: subArrayToSsa,
+  buildStyles: buildStyles,
 };
