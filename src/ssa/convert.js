@@ -5,7 +5,7 @@ function secondsToSsaTime(seconds) {
   var split = [60*60, 60, 1, 0.001].map( function (d, i) {
     var value = parseInt(seconds / d);
     seconds = seconds - (value * d);
-    seconds = Math.round(seconds*100)/100; // TODO, be less hacky
+    seconds = Math.round(seconds*1000)/1000; // TODO, be less hacky
     padder = value.toString();
 
     if (padder.length < 2) {
@@ -41,6 +41,9 @@ function buildEventsHeading() {
 }
 
 function buildText(text, newLine) {
+  if(!newLine) {
+    newLine = '\\n';
+  }
   return text.reduce(function(acc, x) {
     return acc + newLine + x;
   });
@@ -48,21 +51,18 @@ function buildText(text, newLine) {
 
 function buildDialogue(text, start, end, style) {
   if (text) {
-    return 'Dialogue: Marked=0,HardDefault,NTP,0000,0000,0000,!Effect,'
-      + style + ',' + start + ',' + end + ',' + text + '\n';
+    return 'Dialogue: Marked=0,NTP,0000,0000,0000,!Effect,' +
+      style + ',' + secondsToSsaTime(start) + ',' + secondsToSsaTime(end) + ',' + text + '\n';
   }
   return '';
 }
 
 function subToSsa(sub) {
-  var start = secondsToSsaTime(sub.start);
-  var end = secondsToSsaTime(sub.end);
-
   var primaryText = sub.text ? buildText(sub.text) : false;
-  var secondaryText = sub.secondaryText ? buildText(sub.text) : false;
+  var secondaryText = sub.secondaryText ? buildText(sub.secondaryText) : false;
 
-  var primaryDialogue = buildDialogue(primaryText, start, end, 'primary');
-  var secondaryDialogue = buildDialogue(secondaryText, start, end, 'secondary');
+  var primaryDialogue = primaryText ? buildDialogue(primaryText, sub.start, sub.end, 'primary') : '';
+  var secondaryDialogue = secondaryText ? buildDialogue(secondaryText, sub.start, sub.end, 'secondary') : '';
 
   return primaryDialogue + secondaryDialogue;
 }
@@ -71,13 +71,13 @@ function subArrayToSsa(subArray) {
   var heading = buildHeading();
   var styles = buildStyles();
 
-  var events = buildEventsHeading() + '\n' +
-    subArray.map(function(sub) {
-      return subToSsa(sub);
-    });
+  var events = buildEventsHeading() +
+    subArray.reduce(function(acc, sub) {
+      return acc + subToSsa(sub);
+    }, '');
 
-  return heading + '\n\n' +
-    styles + '\n\n' +
+  return heading + '\n' +
+    styles + '\n' +
     events + '\n';
 }
 
