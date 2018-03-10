@@ -1,5 +1,19 @@
 'use strict';
 
+var EVENT_ORDER = [
+  'Marked',
+  'Start',
+  'End',
+  'Style',
+  'Name',
+  'MarginL',
+  'MarginR',
+  'MarginV',
+  'Effect',
+  'Text',
+];
+
+
 function secondsToSsaTime(seconds) {
   var padder;
   var split = [60*60, 60, 1, 0.001].map( function (d, i) {
@@ -36,8 +50,10 @@ function buildStyles() {
 }
 
 function buildEventsHeading() {
-  return '[Events]' + '\n' +
-    'Format: Marked, Name, MarginL, MarginR, MarginV, PrimaryEffect, Style, Start, End, Text\n';
+  return '[Events]' + '\n' + 'Format: ' +
+    EVENT_ORDER.reduce( function (acc, val) {
+      return acc + ', ' + val;
+    }) + '\n';
 }
 
 function buildText(text, newLine) {
@@ -49,10 +65,27 @@ function buildText(text, newLine) {
   });
 }
 
+var dialogueBody = {
+  Marked: 'Marked=0',
+  Name: 'NTP',
+  MarginL: '0000',
+  MarginR: '0000',
+  MarginV: '0000',
+  Effect: '!Effect',
+};
+
 function buildDialogue(text, start, end, style) {
+  var dialogueObject = Object.assign(dialogueBody, {
+    Start: secondsToSsaTime(start),
+    End: secondsToSsaTime(end),
+    Style: style,
+    Text: text,
+  });
+
   if (text) {
-    return 'Dialogue: Marked=0,NTP,0000,0000,0000,!Effect,' +
-      style + ',' + secondsToSsaTime(start) + ',' + secondsToSsaTime(end) + ',' + text + '\n';
+    return 'Dialogue: ' +  EVENT_ORDER.reduce(function (acc, val, i) {
+      return acc + dialogueObject[val] + (i !== EVENT_ORDER.length - 1 ? ',' : '');
+    }, '') + '\n';
   }
   return '';
 }

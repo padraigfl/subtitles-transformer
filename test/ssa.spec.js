@@ -7,6 +7,7 @@ var io = require('../src/io');
 
 var parse = ssa.parse;
 var convert = ssa.convert;
+var style = ssa.style;
 
 describe('SSA:', function() {
   describe('parse', function() {
@@ -59,9 +60,10 @@ describe('SSA:', function() {
       'Style: primary, Tahoma, 24, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n' +
       'Style: secondary, Tahoma, 18, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n';
     var eventHead = '[Events]' + '\n' +
-      'Format: Marked, Name, MarginL, MarginR, MarginV, PrimaryEffect, Style, Start, End, Text\n';
+      'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n';
 
-    var dialoguePrefix = 'Dialogue: Marked=0,NTP,0000,0000,0000,!Effect,';
+    var dialoguePrefix1 = 'Dialogue: Marked=0,'
+    var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
 
     var obj = [
       { start: 72.833, end: 79, text: [ 'ASDFGHJKL', 'ASDFGHJKL' ] },
@@ -96,23 +98,29 @@ describe('SSA:', function() {
     });
     it('buildDialogue', function() {
       expect(convert.buildDialogue(convert.buildText(obj[0].text), obj[0].start, obj[0].end, style)).to.equal(
-        dialoguePrefix + style+',00:01:12.83,00:01:19.00,' + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n'
+        dialoguePrefix1 + '00:01:12.83,00:01:19.00,'+ style + ',' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n'
       );
     });
     it('subToSsa', function() {
       expect(convert.subToSsa(obj[2])).to.equal(
-        dialoguePrefix + 'primary,00:01:55.70,00:01:57.75,' + obj[2].text[0] + '\n' +
-        dialoguePrefix + 'secondary,00:01:55.70,00:01:57.75,' + obj[2].secondaryText[0] + '\n'
+        dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
+        dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText[0] + '\n'
       );
     });
     it('subArrayToSsa', function() {
       expect(convert.subArrayToSsa(obj)).to.equal(
         heading + '\n' + convert.buildStyles() + '\n' + convert.buildEventsHeading() +
-        dialoguePrefix + 'primary,00:01:12.83,00:01:19.00,' + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n' +
-        dialoguePrefix + 'primary,00:01:42.45,00:01:49.41,' + obj[1].text[0] + '\n' +
-        dialoguePrefix + 'primary,00:01:55.70,00:01:57.75,' + obj[2].text[0] + '\n' +
-        dialoguePrefix + 'secondary,00:01:55.70,00:01:57.75,' + obj[2].secondaryText[0] + '\n\n'
+        dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n' +
+        dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text[0] + '\n' +
+        dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
+        dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText[0] + '\n\n'
       );
+    });
+  });
+
+  describe('style', function() {
+    it('works', function() {
+      console.log(style.buildStyleSection());
     });
   });
 });
