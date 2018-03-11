@@ -62,7 +62,7 @@ describe('SSA:', function() {
     var eventHead = '[Events]' + '\n' +
       'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n';
 
-    var dialoguePrefix1 = 'Dialogue: Marked=0,'
+    var dialoguePrefix1 = 'Dialogue: Marked=0,';
     var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
 
     var obj = [
@@ -81,7 +81,7 @@ describe('SSA:', function() {
       expect(convert.buildHeading()).to.equal(heading);
     });
     it('buildStyles', function() {
-      expect(convert.buildStyles()).to.equal(styles);
+      expect(convert.buildHardStyles()).to.equal(styles);
     });
     it('buildEventsHeading', function() {
       expect(convert.buildEventsHeading()).to.equal(eventHead);
@@ -109,7 +109,7 @@ describe('SSA:', function() {
     });
     it('subArrayToSsa', function() {
       expect(convert.subArrayToSsa(obj)).to.equal(
-        heading + '\n' + convert.buildStyles() + '\n' + convert.buildEventsHeading() +
+        heading + '\n' + convert.buildHardStyles() + '\n' + convert.buildEventsHeading() +
         dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n' +
         dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text[0] + '\n' +
         dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
@@ -120,7 +120,13 @@ describe('SSA:', function() {
 
   describe('style', function() {
     it('works', function() {
-      //console.log(style.buildStyleSection());
+      var result = '[V4 Styles]\n' +
+        'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
+        'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
+        'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
+        'Style: secondary,0,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
+
+      expect(style.buildStyleSection()).to.equal(result);
     });
   });
 });

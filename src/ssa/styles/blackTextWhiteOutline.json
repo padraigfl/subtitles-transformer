@@ -1,0 +1,10 @@
+{
+  "fontsize": 24,
+  "color": "black",
+  "topAlign": false,
+  "outline": {
+    "color": "white"
+  },
+  "bold": false,
+  "italic": false
+}

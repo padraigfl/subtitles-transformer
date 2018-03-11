@@ -1,5 +1,8 @@
 'use strict';
 
+var primary= require('./styles/default.json');
+var everything = require('./styles/everything.json');
+
 var styleFormat = [
   'Name',
   'BorderStyle', // e.g. 1
@@ -58,28 +61,15 @@ function getInteger(value, defaults){
   return Number.isInteger(value) ? value : defaults;
 }
 
-function getAlignment(alignStr) {
-  switch (alignStr.toLowerCase()) {
-    case 'top':
-      return 6;
-    default:
-      return 2;
-  }
-}
-
 function buildStyle (styleName, obj) {
   var defaults = {
+    font: 'Tahoma',
     fontsize: 24,
     color: 'white',
-    // outline: {
-    //   color: 'black',
-    // },
     bold: false,
     italic: false,
-    alignment: 'bottom', //make function, top of screen is six
     marginH: 30,
     marginV: 10,
-    font: 'Tahoma',
   };
 
   obj = Object.assign({}, defaults, obj);
@@ -88,7 +78,7 @@ function buildStyle (styleName, obj) {
   var marginH = getInteger(obj.marginH, defaults.marginH);
 
   var valid = {
-    Name: 'styleName',
+    Name: styleName,
     BorderStyle: 0,
     Shadow: 0,
     AlphaLevel: 0,
@@ -100,8 +90,8 @@ function buildStyle (styleName, obj) {
     PrimaryColour: color,
     SecondaryColour: color,
     TertiaryColour: color,
-    BackColour: obj.outline ? processColor(obj.outline.color, defaults.outline.color) : 0,
-    Alignment: getAlignment(obj.alignment),
+    BackColour: obj.outline ? processColor(obj.outline.color, '') : 0,
+    Alignment: ( typeof(obj.topAlign) === typeof(true) && obj.topAlign ) === true ? 6 : 2,
     Fontsize: getInteger(obj.fontsize, defaults.fontsize),
     Bold: obj.bold ? 1 : 0,
     Italic: obj.italic ? 1 : 0,
@@ -124,11 +114,10 @@ function getFormat () {
 function buildStyleSection() {
   return '[V4 Styles]\n' +
     getFormat() + '\n' +
-    buildStyle('primary', {}) +
-    buildStyle('secondary', {});
+    buildStyle('primary', primary) +
+    buildStyle('secondary', everything);
 }
 
 module.exports = {
-  buildStyle: buildStyle,
   buildStyleSection: buildStyleSection,
 };

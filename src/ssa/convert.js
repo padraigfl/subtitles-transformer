@@ -123,5 +123,5 @@ module.exports = {
   buildText: buildText,
   subToSsa: subToSsa,
   subArrayToSsa: subArrayToSsa,
-  buildStyles: buildStyles,
+  buildHardStyles: buildStyles,
 };
