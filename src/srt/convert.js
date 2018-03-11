@@ -1,10 +1,10 @@
 'use strict';
 
-function secondsToSrtTime(seconds) { // TODO - needs tests
+function secondsToSrtTime(mseconds) { // TODO - needs tests
   var padder;
   var split = [60*60, 60, 1, 0.001].map( function (d, i) {
-    var value = parseInt(seconds / d);
-    seconds = seconds - (value * d);
+    var value = parseInt(mseconds / (d * 1000));
+    mseconds = mseconds - (value * d * 1000);
     padder = value.toString();
 
     if (padder.length < 2) {
@@ -41,7 +41,7 @@ function buildSubtitle(subObject) {
 function subArrayToSrt(parsedObj) {
   var b;
   return parsedObj.reduce( function (acc, d, i) {
-    b = (i + 1) + '\n' + buildSubtitle(d) + '\n';
+    b = (i + 1) + '\n' + buildSubtitle(d);
     return acc + b;
   }, '');
 }

@@ -8,7 +8,7 @@ function ssaTimeToSeconds(ssaTime){
       return parseInt(time);
     })
     .reduce( function (acc, t, i) {
-      return acc + t*scale[i];
+      return acc + t*scale[i]*1000;
     }, 0);
 }
 

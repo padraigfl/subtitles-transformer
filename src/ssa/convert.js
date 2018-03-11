@@ -14,12 +14,12 @@ var EVENT_ORDER = [
 ];
 
 
-function secondsToSsaTime(seconds) {
+function secondsToSsaTime(mseconds) {
   var padder;
   var split = [60*60, 60, 1, 0.001].map( function (d, i) {
-    var value = parseInt(seconds / d);
-    seconds = seconds - (value * d);
-    seconds = Math.round(seconds*1000)/1000; // TODO, be less hacky
+    var value = parseInt(mseconds / (d * 1000));
+    mseconds = mseconds - (value * d * 1000);
+    mseconds = Math.round(mseconds); // TODO, be less hacky
     padder = value.toString();
 
     if (padder.length < 2) {

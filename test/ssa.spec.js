@@ -24,7 +24,7 @@ describe('SSA:', function() {
     });
 
     it('ssaTimeToSeconds', function() {
-      expect(parse.ssaTimeToSeconds('01:01:01.01')).to.equal(3661.01);
+      expect(parse.ssaTimeToSeconds('01:01:01.01')).to.equal(3661010);
     });
 
     it('stripHeading', function() {
@@ -39,9 +39,9 @@ describe('SSA:', function() {
 
     it('parsesSsa', function() {
       var expected = [
-        { start: 72.83, end: 79, text: [ 'TestStuff, TestAgain' ] },
-        { start: 102.46, end: 109.42, text: [ '(testing parentheses)' ] },
-        { start: 115.71, end: 117.75, text: [ 'TESTS IN CAPS' ] },
+        { start: 72830, end: 79000, text: [ 'TestStuff, TestAgain' ] },
+        { start: 102460, end: 109420, text: [ '(testing parentheses)' ] },
+        { start: 115710, end: 117750, text: [ 'TESTS IN CAPS' ] },
       ];
       var file = io.read('./test/dummySubs/3Lines.ssa');
 
@@ -66,16 +66,16 @@ describe('SSA:', function() {
     var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
 
     var obj = [
-      { start: 72.833, end: 79, text: [ 'ASDFGHJKL', 'ASDFGHJKL' ] },
-      { start: 102.458, end: 109.417, text: [ 'Sfheee idjfhsa' ] },
-      { start: 115.708, end: 117.75, text: [ 'Oooops' ], secondaryText: [ 'secondary' ] },
+      { start: 72833, end: 79000, text: [ 'ASDFGHJKL', 'ASDFGHJKL' ] },
+      { start: 102458, end: 109417, text: [ 'Sfheee idjfhsa' ] },
+      { start: 115708, end: 117750, text: [ 'Oooops' ], secondaryText: [ 'secondary' ] },
     ];
 
     var style = 'style';
 
     it('secondsToSsaTime', function() {
-      expect(convert.secondsToSsaTime(3901.56)).to.equal('01:05:01.56');
-      expect(convert.secondsToSsaTime(7421.501)).to.equal('02:03:41.50');
+      expect(convert.secondsToSsaTime(3901560)).to.equal('01:05:01.56');
+      expect(convert.secondsToSsaTime(7421501)).to.equal('02:03:41.50');
     });
     it('buildHeading', function() {
       expect(convert.buildHeading()).to.equal(heading);
@@ -120,7 +120,7 @@ describe('SSA:', function() {
 
   describe('style', function() {
     it('works', function() {
-      console.log(style.buildStyleSection());
+      //console.log(style.buildStyleSection());
     });
   });
 });

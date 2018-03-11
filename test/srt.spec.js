@@ -15,9 +15,9 @@ var removeStyles = styling.removeStyles;
 describe('SRT', function () {
   describe('parseSrt', function () {
     var obj = [
-      { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] },
-      { start: 102.458, end: 109.417, text: [ 'Sfheee idjfhsa' ] },
-      { start: 115.708, end: 117.75, text: [ 'Oooops' ] }
+      { start: 72833, end: 79000, text: [ 'ASDFGHJKL' ] },
+      { start: 102458, end: 109417, text: [ 'Sfheee idjfhsa' ] },
+      { start: 115708, end: 117750, text: [ 'Oooops' ] }
     ];
 
     it('should srt to object', function () {
@@ -28,18 +28,18 @@ describe('SRT', function () {
 
     it('should object to srt format', function () {
       var result = subArrayToSrt([obj[0]]);
-      expect(result).to.include(
-        '1\n00:01:12',' 00:01:19', '\nASDFGHJKL\n'
+      expect(result).to.equal(
+        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'
       ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
     });
   });
 
   describe('styleSrt', function () {
-    var noStyle = { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] };
-    var underline = { start: 72.833, end: 79, text: [ '<u>ASDFGHJKL</u>' ] };
-    var twoStyle =  { start: 72.833, end: 79, text: [ '<b><a>ASDFGHJKL</u></b>' ] };
-    var fontStyle =  { start: 72.833, end: 79, text: [ '<a>ASDFGHJKL</u>' ] };
-    var threeStyleWithFont = { start: 72.833, end: 79, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
+    var noStyle = { start: 72833, end: 79000, text: [ 'ASDFGHJKL' ] };
+    var underline = { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
+    var twoStyle =  { start: 72833, end: 79000, text: [ '<b><a>ASDFGHJKL</u></b>' ] };
+    var fontStyle =  { start: 72833, end: 79000, text: [ '<a>ASDFGHJKL</u>' ] };
+    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
 
     it('should have no style', function () {
       expect(isStyled(noStyle.text)).to.equal(false);
