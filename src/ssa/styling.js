@@ -1,7 +1,7 @@
 'use strict';
 
-var primary= require('./styles/default.json');
-var everything = require('./styles/everything.json');
+var _defaultPrimary = require('./styles/default.json');
+var _defaultSecondary = require('./styles/everything.json');
 
 var styleFormat = [
   'Name',
@@ -111,11 +111,13 @@ function getFormat () {
   });
 }
 
-function buildStyleSection() {
+function buildStyleSection(primaryStyle, secondaryStyle) {
+  var primary = primaryStyle ? primaryStyle : _defaultPrimary;
+  var secondary = secondaryStyle ? secondaryStyle : _defaultSecondary;
   return '[V4 Styles]\n' +
     getFormat() + '\n' +
     buildStyle('primary', primary) +
-    buildStyle('secondary', everything);
+    buildStyle('secondary', secondary);
 }
 
 module.exports = {

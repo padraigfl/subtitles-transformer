@@ -4,10 +4,10 @@
 var expect = require('chai').expect;
 var ssa = require('../src/ssa');
 var io = require('../src/io');
+var style = require('../src/ssa/styling');
 
 var parse = ssa.parse;
 var convert = ssa.convert;
-var style = ssa.style;
 
 describe('SSA:', function() {
   describe('parse', function() {
@@ -55,10 +55,10 @@ describe('SSA:', function() {
       'Original Script: Likely Someone Else\n' +
       'ScriptType: v4.00\n';
     var styles = '[V4 Styles]\n' +
-      'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour,' +
-      'Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n' +
-      'Style: primary, Tahoma, 24, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n' +
-      'Style: secondary, Tahoma, 18, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n';
+      'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,' +
+      'Fontname,PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
+      'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
+      'Style: secondary,0,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
     var eventHead = '[Events]' + '\n' +
       'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n';
 
@@ -79,9 +79,6 @@ describe('SSA:', function() {
     });
     it('buildHeading', function() {
       expect(convert.buildHeading()).to.equal(heading);
-    });
-    it('buildStyles', function() {
-      expect(convert.buildHardStyles()).to.equal(styles);
     });
     it('buildEventsHeading', function() {
       expect(convert.buildEventsHeading()).to.equal(eventHead);
@@ -109,7 +106,7 @@ describe('SSA:', function() {
     });
     it('subArrayToSsa', function() {
       expect(convert.subArrayToSsa(obj)).to.equal(
-        heading + '\n' + convert.buildHardStyles() + '\n' + convert.buildEventsHeading() +
+        heading + '\n' + styles + '\n' + convert.buildEventsHeading() +
         dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n' +
         dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text[0] + '\n' +
         dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
@@ -127,6 +124,10 @@ describe('SSA:', function() {
         'Style: secondary,0,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
 
       expect(style.buildStyleSection()).to.equal(result);
+    });
+    xit('works with passed objects', function() {
+    });
+    xit('validates and uses defaults if not object', function() {
     });
   });
 });

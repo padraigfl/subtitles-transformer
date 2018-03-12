@@ -1,5 +1,7 @@
 'use strict';
 
+var buildStyles = require('./styling').buildStyleSection;
+
 var EVENT_ORDER = [
   'Marked',
   'Start',
@@ -12,7 +14,6 @@ var EVENT_ORDER = [
   'Effect',
   'Text',
 ];
-
 
 function secondsToSsaTime(mseconds) {
   var padder;
@@ -40,7 +41,7 @@ function buildHeading() {
     'ScriptType: v4.00\n';
 }
 
-function buildStyles() {
+function buildHardStyles() {
   return '[V4 Styles]\n' +
     'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour,' +
     'Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n' +
@@ -100,9 +101,12 @@ function subToSsa(sub) {
   return primaryDialogue + secondaryDialogue;
 }
 
-function subArrayToSsa(subArray) {
+function subArrayToSsa(subArray, styles) {
   var heading = buildHeading();
-  var styles = buildStyles();
+
+  if (!styles) {
+    styles = buildStyles();
+  }
 
   var events = buildEventsHeading() +
     subArray.reduce(function(acc, sub) {
@@ -123,5 +127,5 @@ module.exports = {
   buildText: buildText,
   subToSsa: subToSsa,
   subArrayToSsa: subArrayToSsa,
-  buildHardStyles: buildStyles,
+  buildHardStyles: buildHardStyles,
 };
