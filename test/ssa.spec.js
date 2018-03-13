@@ -47,6 +47,17 @@ describe('SSA:', function() {
 
       expect(parse.parseSsa(file)).to.deep.equal(expected);
     });
+
+
+    it('parsesSsa with inline styles', function() {
+      var expected = [
+        { start: 47100, end: 49100, text: [ 'asdfsadf sdsaada sdsd a Red blue green karaokeRed blue green karaoke' ] },
+      ];
+      var file = io.read('./test/dummySubs/inlineStyle.ssa');
+
+      expect(parse.parseSsa(file)).to.deep.equal(expected);
+    });
+
   });
 
   describe('convert', function() {

@@ -39,3 +39,9 @@ Linting is supplied using ESLint with configurations set up to follow ES5 standa
 ### Version 1. and onwards
 
   CLI application, electron app, verbose feedback, even better name
+
+### Compromises
+
+- All SSA data other than the times and text will be scrapped, including inline styles (this may be made optional later for ones supported by SRT)
+- Pairing will be a hot mess until later on, currently focused on just having a version that works somewhat okay (e.g. subtitles appear at the same time, ideally disappear at the same time too. Anything more precise seems like it would be a big distraction to the video)
+- I'm looking at following an object structure that matches the most popular SRT package currently, subtitles-parser. I may utilise it at a later date instead of some self-contained operations

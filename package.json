@@ -7,7 +7,7 @@
     "test": "mocha --reporter spec --watch",
     "start": "node src/index.js",
     "lint": "eslint -c .eslintrc.js --quiet src/*",
-    "lint-tests": "eslint -c .eslintrc.js --quiet test/*"
+    "lint:test": "eslint -c .eslintrc.js --quiet test/*"
   },
   "keywords": [
     "ssa",

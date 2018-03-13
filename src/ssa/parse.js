@@ -40,15 +40,20 @@ function pullEventFormat(formatLine) {
   return format;
 }
 
+function removeInlineFormatting(text){
+  return text.split(/{\\[^}]*}/g).join('');
+}
+
 function pullEventData(line, format) {
   var eventList = parseLine('dialogue', line);
 
   return {
     start: ssaTimeToSeconds(eventList[format.startIdx]),
     end: ssaTimeToSeconds(eventList[format.endIdx]),
-    text: eventList.slice(format.textIdx)
-      .join(', ')
-      .split(/\\n/i),
+    text: removeInlineFormatting(
+      eventList.slice(format.textIdx)
+        .join(', ')
+    ).split(/\\n/i),
   };
 }
 
