@@ -69,7 +69,7 @@ describe('SSA:', function() {
       'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,' +
       'Fontname,PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
       'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-      'Style: secondary,0,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
+      'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
     var eventHead = '[Events]' + '\n' +
       'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n';
 
@@ -91,9 +91,6 @@ describe('SSA:', function() {
     it('buildHeading', function() {
       expect(convert.buildHeading()).to.equal(heading);
     });
-    it('buildEventsHeading', function() {
-      expect(convert.buildEventsHeading()).to.equal(eventHead);
-    });
     it('buildText', function() {
       expect(convert.buildText(obj[0].text)).to.equal(
         obj[0].text[0]+'\\n'+obj[0].text[1]
@@ -109,7 +106,7 @@ describe('SSA:', function() {
         dialoguePrefix1 + '00:01:12.83,00:01:19.00,'+ style + ',' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n'
       );
     });
-    it('subToSsa', function() {
+    it('build dialogue with secondary subs', function() {
       expect(convert.subToSsa(obj[2])).to.equal(
         dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
         dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText[0] + '\n'
@@ -132,7 +129,7 @@ describe('SSA:', function() {
         'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
         'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
         'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-        'Style: secondary,0,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
+        'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
 
       expect(style.buildStyleSection()).to.equal(result);
     });

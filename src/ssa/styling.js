@@ -61,6 +61,22 @@ function getInteger(value, defaults){
   return Number.isInteger(value) ? value : defaults;
 }
 
+function getAlignment(alignAttr) {
+  if (alignAttr) {
+    return 6;
+  }
+  return 2;
+}
+
+function getBorderStyle(outline, box) {
+  if (box) {
+    return 3;
+  } else if (outline) {
+    return 1;
+  }
+  return 0;
+}
+
 function buildStyle (styleName, obj) {
   var defaults = {
     font: 'Tahoma',
@@ -79,7 +95,7 @@ function buildStyle (styleName, obj) {
 
   var valid = {
     Name: styleName,
-    BorderStyle: 0,
+    BorderStyle: getBorderStyle(obj.outline, obj.box),
     Shadow: 0,
     AlphaLevel: 0,
     Encoding: 0,
@@ -91,7 +107,7 @@ function buildStyle (styleName, obj) {
     SecondaryColour: color,
     TertiaryColour: color,
     BackColour: obj.outline ? processColor(obj.outline.color, '') : 0,
-    Alignment: ( typeof(obj.topAlign) === typeof(true) && obj.topAlign ) === true ? 6 : 2,
+    Alignment: getAlignment(obj.topAlign),
     Fontsize: getInteger(obj.fontsize, defaults.fontsize),
     Bold: obj.bold ? 1 : 0,
     Italic: obj.italic ? 1 : 0,

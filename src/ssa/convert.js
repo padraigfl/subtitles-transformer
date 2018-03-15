@@ -17,9 +17,9 @@ var EVENT_ORDER = [
 
 function secondsToSsaTime(mseconds) {
   var padder;
-  var split = [60*60, 60, 1, 0.001].map( function (d, i) {
-    var value = parseInt(mseconds / (d * 1000));
-    mseconds = mseconds - (value * d * 1000);
+  var split = [60*60*1000, 60*1000, 1000, 1].map( function (d, i) {
+    var value = parseInt(mseconds / d);
+    mseconds = mseconds - (value * d);
     mseconds = Math.round(mseconds); // TODO, be less hacky
     padder = value.toString();
 

@@ -17,18 +17,20 @@ Linting is supplied using ESLint with configurations set up to follow ES5 standa
       - Moving by ms ✓
       - Character limits ✓
       - Newline substitution ✓
-  3. SRT style handling
-  4. Subtitle merging
-      - Time pairing
+  3. SRT style handling ✓
+  4. Subtitle merging ✓
+      - Time pairing ✓ (needs refactoring)
       - Space conservation efforts
-  5. Simple SSA support
+  5. SSA support ✓
   6. Compatibility across file types
   7. Possible style refinements (carried across versions)
       - Refine merging process hugely
       - Set a minimum display time
       - Fixed color options
-      - Track for overlapping
-      - Maximum offset match, insist of full shift otherwise
+      - Track for overlapping subs
+      - Maximum offset match, insist on full shift otherwise
+      - Opaque background style option
+      - Match subtitles-parser object attributes
       - [add as found in earlier steps]
   7. Split into format specific node modules
   8. (unlikely to be implemented)

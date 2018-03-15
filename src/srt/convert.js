@@ -2,9 +2,9 @@
 
 function secondsToSrtTime(mseconds) { // TODO - needs tests
   var padder;
-  var split = [60*60, 60, 1, 0.001].map( function (d, i) {
-    var value = parseInt(mseconds / (d * 1000));
-    mseconds = mseconds - (value * d * 1000);
+  var split = [60*60*1000, 60*1000, 1000, 1].map( function (d, i) {
+    var value = parseInt(mseconds / d);
+    mseconds = mseconds - (value * d);
     padder = value.toString();
 
     if (padder.length < 2) {

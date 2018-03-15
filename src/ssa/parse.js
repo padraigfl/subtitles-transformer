@@ -1,14 +1,14 @@
 'use strict';
 
 function ssaTimeToSeconds(ssaTime){
-  var scale = [60*60, 60, 1, 0.01];
+  var scale = [60*60*1000, 60*1000, 1000, 10];
 
   return ssaTime.split(/[:.]/g)
     .map( function (time) {
       return parseInt(time);
     })
     .reduce( function (acc, t, i) {
-      return acc + t*scale[i]*1000;
+      return acc + t*scale[i];
     }, 0);
 }
 
