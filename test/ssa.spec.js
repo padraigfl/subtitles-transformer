@@ -35,8 +35,6 @@ describe('SSA:', function() {
       expect(strippedLines[1]).to.equal('Dialogue: Marked=0,00:01:12.83,00:01:19.00,HardDefault,NTP,0000,0000,0000,!Effect,TestStuff, TestAgain');
     });
 
-    xit('stringInlineStyles', function() {});
-
     it('parsesSsa', function() {
       var expected = [
         { start: 72830, end: 79000, text: [ 'TestStuff, TestAgain' ] },
@@ -70,8 +68,6 @@ describe('SSA:', function() {
       'Fontname,PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
       'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
       'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
-    var eventHead = '[Events]' + '\n' +
-      'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n';
 
     var dialoguePrefix1 = 'Dialogue: Marked=0,';
     var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
@@ -124,7 +120,7 @@ describe('SSA:', function() {
   });
 
   describe('style', function() {
-    it('works', function() {
+    it('works with default json fields', function() {
       var result = '[V4 Styles]\n' +
         'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
         'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
@@ -133,9 +129,14 @@ describe('SSA:', function() {
 
       expect(style.buildStyleSection()).to.equal(result);
     });
-    xit('works with passed objects', function() {
-    });
-    xit('validates and uses defaults if not object', function() {
+    it('reverts to defaults when passed junk', function() {
+      var result = '[V4 Styles]\n' +
+        'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
+        'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
+        'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
+        'Style: secondary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n';
+      expect(style.buildStyleSection('wrongformat', {})).to.equal(result);
+      expect(style.buildStyleSection(3, {})).to.equal(result);
     });
   });
 });
