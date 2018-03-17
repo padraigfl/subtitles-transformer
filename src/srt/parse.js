@@ -2,10 +2,11 @@
 
 var FILE_VALIDATOR_RX = require('./constants').regEx.FILE_VALIDATOR;
 
-function splitStringFile(data) {
-  return data.split(/\n\n+/g)
+function splitStringFile(data){
+  var splitRexEx = /(\r\n|\n){2,}/g;
+  return data.split(splitRexEx)
     .map( function (x) {
-      return x.split('\n');
+      return x.split(/\r\n|\n/g);
     });
 }
 
@@ -26,7 +27,6 @@ function getTimeObject(timeLine) {
     .map( function(time) {
       return srtTimeToSeconds(time);
     });
-
   return {start: times[0], end: times[1]};
 }
 
@@ -42,14 +42,17 @@ function parseSrt(data) {
 
   var s = splitStringFile(cleanFile(data));
 
-  var fmt = s.map( function (subtitle) {
+  var fmt = s.filter(function(subtitle) {
+    if(subtitle.length >= 3 && !subtitle[0].match(/^\s*$/)) { // haaaack
+      return subtitle;
+    }
+  }).map( function (subtitle) {
     var times = getTimeObject(subtitle[1]);
     var lines = subtitle.slice(2);
-
     return {
       start: times.start,
       end: times.end,
-      text: lines
+      text: lines,
     };
   });
 

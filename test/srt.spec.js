@@ -5,8 +5,8 @@ var expect = require('chai').expect;
 var io = require('../src/io');
 
 var srt = require('../src/srt');
-var parseSrt = srt.parse.parseSrt;
-var subArrayToSrt = srt.convert.subArrayToSrt;
+var parseSrt = srt.parse;
+var subArrayToSrt = srt.convert;
 
 var styling = require('../src/srt/styling');
 var isStyled = styling.isStyled;

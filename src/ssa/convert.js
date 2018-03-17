@@ -94,7 +94,6 @@ function buildDialogue(text, start, end, style) {
 function subToSsa(sub) {
   var primaryText = sub.text ? buildText(sub.text) : false;
   var secondaryText = sub.secondaryText ? buildText(sub.secondaryText) : false;
-
   var primaryDialogue = primaryText ? buildDialogue(primaryText, sub.start, sub.end, 'primary') : '';
   var secondaryDialogue = secondaryText ? buildDialogue(secondaryText, sub.start, sub.end, 'secondary') : '';
 

@@ -34,6 +34,9 @@ function textToSrt(textArray, divider) {
 function buildSubtitle(subObject) {
   var times = getTimeLine(subObject.start, subObject.end);
   var subLines = textToSrt(subObject.text);
+  if (subObject.secondaryText) {
+    subLines += textToSrt(subObject.secondaryText);
+  }
 
   return times + '\n' + subLines + '\n';
 }
