@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --reporter spec --watch",
     "start": "node src/index.js",
-    "lint": "eslint -c .eslintrc.js --quiet src/*",
+    "lint": "eslint -c .eslintrc.js --quiet src/* test/*",
+    "lint:src": "eslint -c .eslintrc.js --quiet src/*",
     "lint:test": "eslint -c .eslintrc.js --quiet test/*"
   },
   "keywords": [

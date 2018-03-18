@@ -36,6 +36,8 @@ function isValidPair(s1, s2, offset) {
     return c.START_LATE_END_EARLY;
   } else if( s1.start > s2.start && s1.end < s2.end) {
     return c.START_EARLY_END_LATE;
+  } else if (s2.start >= s1.end) {
+    return c.START_AFTER_END;
   }
   return false;
 }
@@ -56,6 +58,8 @@ function makePairs(s1, s2, offset) {
       temp = isValidPair(s1[s1count], s2[s2count], offset);
       if (temp === c.FULL_MATCH || temp === c.START_LATE_END_EARLY || temp === c.START_EARLY_END_LATE) {
         primary[s1count].secondaryText = s2[s2count].text;
+        break;
+      } else if (temp === c.START_AFTER_END) {
         break;
       }
       s2count++;

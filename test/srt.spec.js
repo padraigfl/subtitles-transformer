@@ -46,7 +46,7 @@ describe('SRT', function () {
     var underline = { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
     var twoStyle =  { start: 72833, end: 79000, text: [ '<b><u>ASDFGHJKL</u></b>' ] };
     var fontStyle =  { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
-    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
+    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue">ASD<b><a>FGHJKL</u></b></font>' ] };
 
     it('isStyled', function () {
       expect(isStyled(noStyle.text)).to.equal(false);

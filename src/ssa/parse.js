@@ -17,8 +17,8 @@ function cleanFile(data) {
 }
 
 function stripHeading(ssaFile) {
-  return ssaFile.split(/\n{2,}/)[2]
-    .replace(/\[events\]\s*\n/i, '');
+  return ssaFile.split(/[\r\n]{4,}|\n{2,}/)[2]
+    .replace(/\[events\]\s*(\r\n|\n)/i, '');
 }
 
 function parseLine(heading, line) {
@@ -58,7 +58,8 @@ function pullEventData(line, format) {
 }
 
 function parseSsa(data) {
-  var eventsString = stripHeading(cleanFile(data)).split('\n');
+  var eventsString = stripHeading(cleanFile(data))
+    .split(/\r\n|\n/);
   var eventFormat = pullEventFormat(eventsString.shift());
 
   return eventsString.map(function(event) {

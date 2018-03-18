@@ -1,9 +1,10 @@
 'use strict';
 
+var stripStyles = require('./styling').removeStyles;
 var FILE_VALIDATOR_RX = require('./constants').regEx.FILE_VALIDATOR;
 
 function splitStringFile(data){
-  var splitRexEx = /(\r\n|\n){2,}/g;
+  var splitRexEx = /[\r\n]{4,}|\n{2,}/g;
   return data.split(splitRexEx)
     .map( function (x) {
       return x.split(/\r\n|\n/g);
@@ -42,13 +43,11 @@ function parseSrt(data) {
 
   var s = splitStringFile(cleanFile(data));
 
-  var fmt = s.filter(function(subtitle) {
-    if(subtitle.length >= 3 && !subtitle[0].match(/^\s*$/)) { // haaaack
-      return subtitle;
-    }
-  }).map( function (subtitle) {
+  var fmt = s.map( function (subtitle) {
     var times = getTimeObject(subtitle[1]);
-    var lines = subtitle.slice(2);
+    var lines = subtitle.slice(2).map( function (line) {
+      return stripStyles(line);
+    });
     return {
       start: times.start,
       end: times.end,

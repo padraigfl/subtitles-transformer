@@ -13,4 +13,6 @@ module.exports = {
 
   START_EARLY_END_MATCH: 'START_EARLY_END_MATCH', // treat as within // future: double up?
   START_LATE_END_MATCH: 'START_LATE_END_MATCH', // treat as within for now
+
+  START_AFTER_END: 'START_AFTER_END',
 };

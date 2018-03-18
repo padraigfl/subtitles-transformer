@@ -36,7 +36,7 @@ function color(content, _color){
 
 function removeStyles(text){
   var filteredText = text.split(regEx.TAGS);
-  return filteredText[( filteredText.length-1 ) / 2];
+  return filteredText.join('');
 }
 
 module.exports = {
