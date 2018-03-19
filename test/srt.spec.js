@@ -13,11 +13,11 @@ var isStyled = styling.isStyled;
 var removeStyles = styling.removeStyles;
 
 describe('SRT', function () {
-  describe('parseSrt', function () {
+  describe('parse', function () {
     var obj = [
-      { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] },
-      { start: 102.458, end: 109.417, text: [ 'Sfheee idjfhsa' ] },
-      { start: 115.708, end: 117.75, text: [ 'Oooops' ] }
+      { start: 72833, end: 79000, text: [ 'ASDFGHJKL' ] },
+      { start: 102458, end: 109417, text: [ 'Sfheee idjfhsa' ] },
+      { start: 115708, end: 117750, text: [ 'Oooops' ] }
     ];
 
     it('should srt to object', function () {
@@ -25,27 +25,31 @@ describe('SRT', function () {
       var result = parseSrt(x);
       expect(result).to.deep.equal(obj);
     });
+  });
 
+  describe('convert', function() {
+    var obj = [
+      { start: 72833, end: 79000, text: [ 'ASDFGHJKL' ] },
+      { start: 102458, end: 109417, text: [ 'Sfheee idjfhsa' ] },
+      { start: 115708, end: 117750, text: [ 'Oooops' ] }
+    ];
     it('should object to srt format', function () {
       var result = subArrayToSrt([obj[0]]);
-      expect(result).to.include(
-        '1\n00:01:12',' 00:01:19', '\nASDFGHJKL\n'
+      expect(result).to.equal(
+        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'
       ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
     });
   });
 
   describe('styleSrt', function () {
-    var noStyle = { start: 72.833, end: 79, text: [ 'ASDFGHJKL' ] };
-    var underline = { start: 72.833, end: 79, text: [ '<u>ASDFGHJKL</u>' ] };
-    var twoStyle =  { start: 72.833, end: 79, text: [ '<b><a>ASDFGHJKL</u></b>' ] };
-    var fontStyle =  { start: 72.833, end: 79, text: [ '<a>ASDFGHJKL</u>' ] };
-    var threeStyleWithFont = { start: 72.833, end: 79, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
+    var noStyle = { start: 72833, end: 79000, text: [ 'ASDFGHJKL' ] };
+    var underline = { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
+    var twoStyle =  { start: 72833, end: 79000, text: [ '<b><u>ASDFGHJKL</u></b>' ] };
+    var fontStyle =  { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
+    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
 
-    it('should have no style', function () {
+    it('isStyled', function () {
       expect(isStyled(noStyle.text)).to.equal(false);
-    });
-
-    it('should have a style', function () {
       expect(isStyled(underline.text)).to.equal(true);
     });
 
@@ -53,19 +57,19 @@ describe('SRT', function () {
       it('italicize', function () {
         expect(styling.italicize(noStyle.text[0])).to.equal('<i>'+noStyle.text[0]+'</i>');
       });
-      it('bold', function () {
+      it('bolden', function () {
         expect(styling.bolden(noStyle.text[0])).to.equal('<b>'+noStyle.text[0]+'</b>');
       });
       it('underline', function () {
         expect(styling.underline(noStyle.text[0])).to.equal('<u>'+noStyle.text[0]+'</u>');
       });
-      it('font color', function () {
+      it('color', function () {
         expect(styling.color(noStyle.text[0], 'blue'))
           .to.equal('<font color="blue">'+noStyle.text[0]+'</font>');
       });
     });
 
-    describe('removing styles', function(){
+    describe('removeStyles', function(){
       it('return as if when no styles', function(){
         expect(removeStyles(noStyle.text[0])).to.equal(noStyle.text[0]);
       });

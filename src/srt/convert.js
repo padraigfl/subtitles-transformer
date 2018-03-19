@@ -1,10 +1,10 @@
 'use strict';
 
-function secondsToSrtTime(seconds) {
+function secondsToSrtTime(mseconds) { // TODO - needs tests
   var padder;
-  var split = [60*60, 60, 1, 0.001].map( function (d, i) {
-    var value = parseInt(seconds / d);
-    seconds = seconds - (value * d);
+  var split = [60*60*1000, 60*1000, 1000, 1].map( function (d, i) {
+    var value = parseInt(mseconds / d);
+    mseconds = mseconds - (value * d);
     padder = value.toString();
 
     if (padder.length < 2) {
@@ -15,7 +15,7 @@ function secondsToSrtTime(seconds) {
     }
     return padder;
   });
-  return split[0] + ':' + split[1] + ':' + split[2] + ':' + split[3];
+  return split[0] + ':' + split[1] + ':' + split[2] + ',' + split[3];
 }
 
 function getTimeLine(start, end) {
@@ -41,7 +41,7 @@ function buildSubtitle(subObject) {
 function subArrayToSrt(parsedObj) {
   var b;
   return parsedObj.reduce( function (acc, d, i) {
-    b = (i + 1) + '\n' + buildSubtitle(d) + '\n';
+    b = (i + 1) + '\n' + buildSubtitle(d);
     return acc + b;
   }, '');
 }
