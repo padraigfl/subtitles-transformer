@@ -136,6 +136,4 @@ function buildStyleSection(primaryStyle, secondaryStyle) {
     buildStyle('secondary', secondary);
 }
 
-module.exports = {
-  buildStyleSection: buildStyleSection,
-};
+module.exports = buildStyleSection;

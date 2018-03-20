@@ -1,6 +1,6 @@
 'use strict';
 
-function secondsToSrtTime(mseconds) { // TODO - needs tests
+function msecToSrtTime(mseconds) { // TODO - needs tests
   var padder;
   var split = [60*60*1000, 60*1000, 1000, 1].map( function (d, i) {
     var value = parseInt(mseconds / d);
@@ -19,7 +19,7 @@ function secondsToSrtTime(mseconds) { // TODO - needs tests
 }
 
 function getTimeLine(start, end) {
-  return secondsToSrtTime(start)+' --> '+secondsToSrtTime(end);
+  return msecToSrtTime(start)+' --> '+msecToSrtTime(end);
 }
 
 function textToSrt(textArray, divider) {
@@ -49,7 +49,4 @@ function subArrayToSrt(parsedObj) {
   }, '');
 }
 
-module.exports = {
-  secondsToSrtTime: secondsToSrtTime,
-  subArrayToSrt: subArrayToSrt,
-};
+module.exports = subArrayToSrt;

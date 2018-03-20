@@ -11,7 +11,7 @@ function splitStringFile(data){
     });
 }
 
-function srtTimeToSeconds(srtTime){
+function srtTimeToMsec(srtTime){
   var scale = [60*60*1000, 60*1000, 1000, 1];
 
   return srtTime.split(/[:,]/g)
@@ -26,7 +26,7 @@ function srtTimeToSeconds(srtTime){
 function getTimeObject(timeLine) {
   var times = timeLine.split(/\s*-->\s*/g)
     .map( function(time) {
-      return srtTimeToSeconds(time);
+      return srtTimeToMsec(time);
     });
   return {start: times[0], end: times[1]};
 }
@@ -58,6 +58,4 @@ function parseSrt(data) {
   return fmt;
 }
 
-module.exports = {
-  parseSrt: parseSrt,
-};
+module.exports = parseSrt;

@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  parse: require('./parse'),
-  convert: require('./convert'),
+  parse: require('./parse').parseSsa,
+  convert: require('./convert').subArrayToSsa,
   styles: {
     DEFAULT: require('./styles/default.json'),
     SMALL: require('./styles/white16.json'),

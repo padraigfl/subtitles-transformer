@@ -6,7 +6,7 @@ var io = require('../src/io');
 
 var srt = require('../src/srt');
 var parseSrt = srt.parse;
-var subArrayToSrt = srt.convert;
+var arrayToSrt = srt.convert;
 
 var styling = require('../src/srt/styling');
 var isStyled = styling.isStyled;
@@ -34,7 +34,7 @@ describe('SRT', function () {
       { start: 115708, end: 117750, text: [ 'Oooops' ] }
     ];
     it('should object to srt format', function () {
-      var result = subArrayToSrt([obj[0]]);
+      var result = arrayToSrt([obj[0]]);
       expect(result).to.equal(
         '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'
       ); //rouding down and floating points makes direct comparisons potentially off by a millesecond

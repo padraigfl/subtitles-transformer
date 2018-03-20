@@ -1,6 +1,6 @@
 'use strict';
 
-function ssaTimeToSeconds(ssaTime){
+function ssaTimeToMsec(ssaTime){
   var scale = [60*60*1000, 60*1000, 1000, 10];
 
   return ssaTime.split(/[:.]/g)
@@ -48,8 +48,8 @@ function pullEventData(line, format) {
   var eventList = parseLine('dialogue', line);
 
   return {
-    start: ssaTimeToSeconds(eventList[format.startIdx]),
-    end: ssaTimeToSeconds(eventList[format.endIdx]),
+    start: ssaTimeToMsec(eventList[format.startIdx]),
+    end: ssaTimeToMsec(eventList[format.endIdx]),
     text: removeInlineFormatting(
       eventList.slice(format.textIdx)
         .join(', ')
@@ -70,7 +70,7 @@ function parseSsa(data) {
 module.exports = {
   parseSsa: parseSsa,
 
-  ssaTimeToSeconds: ssaTimeToSeconds,
+  ssaTimeToMsec: ssaTimeToMsec,
   parseLine: parseLine,
   stripHeading: stripHeading,
 };
