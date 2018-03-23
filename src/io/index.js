@@ -3,7 +3,7 @@
 var fs = require('fs');
 
 function readFile(filename) {
-  return fs.readFileSync(filename, 'ascii', function(err, data) {
+  return fs.readFileSync(filename, 'utf8', function(err, data) {
     if (err) throw err;
     return data;
   });

@@ -1,10 +1,13 @@
 {
   "font": "Times New Roman",
   "fontsize": 12,
-  "color": "red",
+  "color": "white",
   "topAlign": true,
   "outline": {
-    "color": "yellow"
+    "color": "black"
+  },
+  "background": {
+    "color": "black"
   },
   "bold": true,
   "italic": true,

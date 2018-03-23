@@ -38,6 +38,8 @@ function isValidPair(s1, s2, offset) {
     return c.START_EARLY_END_LATE;
   } else if (s2.start >= s1.end) {
     return c.START_AFTER_END;
+  } else if (s2.end <= s2.start) {
+    return c.END_BEFORE_START; // TODO future optional inclusion
   }
   return false;
 }

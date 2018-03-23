@@ -1,7 +1,7 @@
 'use strict';
 
 var stripStyles = require('./styling').removeStyles;
-var FILE_VALIDATOR_RX = require('./constants').regEx.FILE_VALIDATOR;
+var FILE_VALIDATOR_RX =  /^(\d+(\r\n|\n)\d\d:\d\d:\d\d,\d\d\d\s*-->\s*\d\d:\d\d:\d\d,\d\d\d(\r\n|\n)([^\n]+\n)+(\r\n|\n)*)+$/;
 
 function splitStringFile(data){
   var splitRexEx = /[\r\n]{4,}|\n{2,}/g;

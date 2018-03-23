@@ -66,7 +66,7 @@ describe('SSA:', function() {
       'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,' +
       'Fontname,PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
       'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-      'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,12,1,1,1\n';
+      'Style: secondary,3,0,0,0,10,10,10,Times New Roman,16777215,16777215,16777215,0,6,12,1,1,1\n';
 
     var dialoguePrefix1 = 'Dialogue: Marked=0,';
     var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
@@ -124,7 +124,7 @@ describe('SSA:', function() {
         'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
         'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
         'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-        'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,12,1,1,1\n';
+        'Style: secondary,3,0,0,0,10,10,10,Times New Roman,16777215,16777215,16777215,0,6,12,1,1,1\n';
 
       expect(styler()).to.equal(result);
     });

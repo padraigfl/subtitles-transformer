@@ -15,4 +15,5 @@ module.exports = {
   START_LATE_END_MATCH: 'START_LATE_END_MATCH', // treat as within for now
 
   START_AFTER_END: 'START_AFTER_END',
+  END_BEFORE_START: 'END_BEFORE_START',
 };
