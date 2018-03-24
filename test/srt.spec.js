@@ -34,9 +34,11 @@ describe('SRT', function () {
       { start: 115708, end: 117750, text: [ 'Oooops' ] }
     ];
     it('should object to srt format', function () {
-      var result = arrayToSrt([obj[0]]);
+      var result = arrayToSrt(obj);
       expect(result).to.equal(
-        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'
+        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'+
+        '2\n00:01:42,458 --> 00:01:49,417\nSfheee idjfhsa\n\n'+
+        '3\n00:01:55,708 --> 00:01:57,750\nOooops\n\n'
       ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
     });
   });
@@ -69,23 +71,20 @@ describe('SRT', function () {
       });
     });
 
-    describe('removeStyles', function(){
+    // no longer export
+    xdescribe('removeStyles', function(){
       it('return as if when no styles', function(){
         expect(removeStyles(noStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removing basic styles', function(){
         expect(removeStyles(underline.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removing font color styles', function(){
         expect(removeStyles(fontStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removes multiple styles', function(){
         expect(removeStyles(twoStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removes multiple styles inc. color', function(){
         expect(removeStyles(threeStyleWithFont.text[0])).to.equal(noStyle.text[0]);
       });

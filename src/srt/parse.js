@@ -1,7 +1,7 @@
 'use strict';
 
-var stripStyles = require('./styling').removeStyles;
 var FILE_VALIDATOR_RX =  /^(\d+(\r\n|\n)\d\d:\d\d:\d\d,\d\d\d\s*-->\s*\d\d:\d\d:\d\d,\d\d\d(\r\n|\n)([^\n]+\n)+(\r\n|\n)*)+$/;
+var TAGS_RX = /<\/?\w+\s*?c?o?l?o?r?=?['"\w]*?>/;
 
 function splitStringFile(data){
   var splitRexEx = /[\r\n]{4,}|\n{2,}/g;
@@ -35,7 +35,12 @@ function cleanFile(data){
   return data.replace(/^\s+|\s+$/g, '');
 }
 
-function parseSrt(data) {
+function removeStyles(text){
+  var filteredText = text.split(TAGS_RX);
+  return filteredText.join('');
+}
+
+function parseSrt(data, clearStyles) {
   if (!data.match(FILE_VALIDATOR_RX)){
     // eslint-disable-next-line
     console.error('This file has failed the SRT format validation check, errors in output are to be expected');
@@ -45,9 +50,13 @@ function parseSrt(data) {
 
   var fmt = s.map( function (subtitle) {
     var times = getTimeObject(subtitle[1]);
-    var lines = subtitle.slice(2).map( function (line) {
-      return stripStyles(line);
-    });
+    var lines = subtitle.slice(2);
+    if (clearStyles) {
+      lines = lines.map( function (line) {
+        return removeStyles(line);
+      });
+    }
+
     return {
       start: times.start,
       end: times.end,

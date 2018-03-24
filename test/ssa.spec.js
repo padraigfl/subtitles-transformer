@@ -52,7 +52,7 @@ describe('SSA:', function() {
       ];
       var file = io.read('./test/dummySubs/inlineStyle.ssa');
 
-      expect(parse.parseSsa(file)).to.deep.equal(expected);
+      expect(parse.parseSsa(file, true)).to.deep.equal(expected);
     });
 
   });

@@ -26,9 +26,11 @@ function textToSrt(textArray, divider) {
   if (!divider) {
     divider = '\n';
   }
-  return textArray.reduce( function (acc, d) {
+  var subtitle = textArray.reduce( function (acc, d) {
     return acc + d + divider;
   }, '');
+
+  return divider !== '\n' ? subtitle + '\n' : subtitle;
 }
 
 function buildSubtitle(subObject) {

@@ -44,26 +44,31 @@ function removeInlineFormatting(text){
   return text.split(/{\\[^}]*}/g).join('');
 }
 
-function pullEventData(line, format) {
+function pullEventData(line, format, omitInlineStyles) {
   var eventList = parseLine('dialogue', line);
 
+  var start = ssaTimeToMsec(eventList[format.startIdx]);
+  var end = ssaTimeToMsec(eventList[format.endIdx]);
+  var text = eventList.slice(format.textIdx).join(', ');
+
+  if (omitInlineStyles) {
+    text = removeInlineFormatting(text);
+  }
+
   return {
-    start: ssaTimeToMsec(eventList[format.startIdx]),
-    end: ssaTimeToMsec(eventList[format.endIdx]),
-    text: removeInlineFormatting(
-      eventList.slice(format.textIdx)
-        .join(', ')
-    ).split(/\\n/i),
+    start: start,
+    end: end,
+    text: text.split(/\\n/i),
   };
 }
 
-function parseSsa(data) {
+function parseSsa(data, omitInlineStyles) {
   var eventsString = stripHeading(cleanFile(data))
     .split(/\r\n|\n/);
   var eventFormat = pullEventFormat(eventsString.shift());
 
   return eventsString.map(function(event) {
-    return pullEventData(event, eventFormat);
+    return pullEventData(event, eventFormat, omitInlineStyles);
   });
 }
 

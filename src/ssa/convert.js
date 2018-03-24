@@ -98,6 +98,10 @@ function subToSsa(sub) {
 }
 
 function subArrayToSsa(subArray, styles) {
+  if(!Array.isArray(subArray) && subArray.start && subArray.end && subArray.text){
+    subArray = [ subArray ];
+  }
+
   var heading = buildHeading();
 
   if (!styles) {

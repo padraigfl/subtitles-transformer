@@ -40,16 +40,10 @@ function color(content, _color){
   return addStyle(GET_COLOR(_color), content);
 }
 
-function removeStyles(text){
-  var filteredText = text.split(TAGS_RX);
-  return filteredText.join('');
-}
-
 module.exports = {
   isStyled: isStyled,
   italicize: italicize,
   bolden: bolden,
   underline: underline,
   color: color,
-  removeStyles: removeStyles,
 };
