@@ -28,7 +28,7 @@ describe('SSA:', function() {
 
     it('stripHeading', function() {
       var file = io.read('./test/dummySubs/3Lines.ssa');
-      var strippedLines = parse.stripHeading(file).split('\n');
+      var strippedLines = parse.stripHeading(file);
 
       expect(strippedLines[0]).to.equal('Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, PrimaryEffect, Text');
       expect(strippedLines[1]).to.equal('Dialogue: Marked=0,00:01:12.83,00:01:19.00,HardDefault,NTP,0000,0000,0000,!Effect,TestStuff, TestAgain');

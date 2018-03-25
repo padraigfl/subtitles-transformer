@@ -16,9 +16,17 @@ function cleanFile(data) {
   return data.replace(/^\s+|\s+$/g, '');
 }
 
+// TODO improve handling of multiline breaks which occur in events
 function stripHeading(ssaFile) {
-  return ssaFile.split(/[\r\n]{4,}|\n{2,}/)[2]
-    .replace(/\[events\]\s*(\r\n|\n)/i, '');
+  var eventsSection = ssaFile.split(/[\r\n]{4,}|\n{2,}/).slice(2)
+    .join('\n');
+
+  eventsSection = eventsSection
+    .split(/[\n\s]*\[\s*Events\s*\][\n\s]*/i)
+    .join('')
+    .split('\n');
+
+  return eventsSection;
 }
 
 function parseLine(heading, line) {
@@ -63,11 +71,15 @@ function pullEventData(line, format, omitInlineStyles) {
 }
 
 function parseSsa(data, omitInlineStyles) {
-  var eventsString = stripHeading(cleanFile(data))
-    .split(/\r\n|\n/);
-  var eventFormat = pullEventFormat(eventsString.shift());
+  var eventsList = stripHeading(cleanFile(data));
+  var eventFormat = pullEventFormat(eventsList.shift());
 
-  return eventsString.map(function(event) {
+  eventsList = eventsList.filter(function(event) {
+    if(event.split(':')[0].match(/Dialogue\s*/i)) {
+      return event;
+    }
+  });
+  return eventsList.map(function(event) {
     return pullEventData(event, eventFormat, omitInlineStyles);
   });
 }
