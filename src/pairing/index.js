@@ -1,3 +1,5 @@
+'use strict';
+
 var c = require('./constants');
 
 function isInRange(time1, time2, variance) {

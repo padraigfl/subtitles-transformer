@@ -24,7 +24,7 @@ var styleFormat = [
   'Outline', // binary 1/0
 ];
 
-//0-255 is pure red,
+// TODO, switch to other color scheme
 function getSsaColor (colorStr) {
   if(!colorStr) {
     colorStr = '';
