@@ -24,8 +24,11 @@ var styleFormat = [
   'Outline', // binary 1/0
 ];
 
-//0-255 is pure red,
+// TODO, switch to other color scheme
 function getSsaColor (colorStr) {
+  if(!colorStr) {
+    colorStr = '';
+  }
   switch (colorStr.toLowerCase()) {
     case 'white':
       return 16777215;
@@ -40,7 +43,7 @@ function getSsaColor (colorStr) {
     case 'green':
       return 32768;
     default:
-      -2147483640;
+      return 0;
   }
 }
 
@@ -68,8 +71,8 @@ function getAlignment(alignAttr) {
   return 2;
 }
 
-function getBorderStyle(outline, box) {
-  if (box) {
+function getBorderStyle(outline, background) {
+  if (background) {
     return 3;
   } else if (outline) {
     return 1;
@@ -77,11 +80,20 @@ function getBorderStyle(outline, box) {
   return 0;
 }
 
+function getOutlineOrBackColor(outline, background, defaultColor) {
+  if(background) {
+    return processColor(background.color, defaultColor);
+  } else if (outline) {
+    return processColor(outline.color, defaultColor);
+  }
+}
+
 function buildStyle (styleName, obj) {
   var defaults = {
     font: 'Tahoma',
     fontsize: 24,
     color: 'white',
+    outlineColor: 'black',
     bold: false,
     italic: false,
     marginH: 30,
@@ -95,7 +107,7 @@ function buildStyle (styleName, obj) {
 
   var valid = {
     Name: styleName,
-    BorderStyle: getBorderStyle(obj.outline, obj.box),
+    BorderStyle: getBorderStyle(obj.outline, obj.background),
     Shadow: 0,
     AlphaLevel: 0,
     Encoding: 0,
@@ -106,12 +118,13 @@ function buildStyle (styleName, obj) {
     PrimaryColour: color,
     SecondaryColour: color,
     TertiaryColour: color,
-    BackColour: obj.outline ? processColor(obj.outline.color, '') : 0,
+    BackColour: (obj.outline || obj.background) ?
+      getOutlineOrBackColor(obj.outline, obj.background, defaults.outlineColor) : processColor(),
     Alignment: getAlignment(obj.topAlign),
     Fontsize: getInteger(obj.fontsize, defaults.fontsize),
     Bold: obj.bold ? 1 : 0,
     Italic: obj.italic ? 1 : 0,
-    Outline: obj.outline ? 1 : 0,
+    Outline: (obj.outline || obj.background) ? 1 : 0,
   };
 
   var style = styleFormat.reduce(function (acc, val, i) {
@@ -136,6 +149,4 @@ function buildStyleSection(primaryStyle, secondaryStyle) {
     buildStyle('secondary', secondary);
 }
 
-module.exports = {
-  buildStyleSection: buildStyleSection,
-};
+module.exports = buildStyleSection;

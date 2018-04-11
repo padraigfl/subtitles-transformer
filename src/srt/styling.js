@@ -1,13 +1,19 @@
 'use strict';
 
-var tags = require('./constants').tags;
-var regEx = require('./constants').regEx;
+var TAGS_RX = /<\/?\w+\s*?c?o?l?o?r?=?['"\w]*?>/;
+var ITALICS = ['<i>', '</i>'];
+var BOLD = ['<b>', '</b>'];
+var UNDERLINE = ['<u>', '</u>'];
+
+function GET_COLOR(_color){
+  return ['<font color="'+_color+'">', '</font>'];
+}
 
 function isStyled(subtitle){
   var styles = false;
 
   subtitle.forEach( function (line) {
-    if (line.match(regEx.TAGS)) {
+    if (line.match(TAGS_RX)) {
       styles = true;
     }
   });
@@ -19,24 +25,19 @@ function addStyle(tags, content) {
   return tags[0]+content+tags[1];
 }
 function italicize(content){
-  return addStyle(tags.ITALICS, content);
+  return addStyle(ITALICS, content);
 }
 function bolden(content){
-  return addStyle(tags.BOLD, content);
+  return addStyle(BOLD, content);
 }
 function underline(content){
-  return addStyle(tags.UNDERLINE, content);
+  return addStyle(UNDERLINE, content);
 }
 function color(content, _color){
   if (!_color) {
     _color = '#000000';
   }
-  return addStyle(tags.GET_COLOR(_color), content);
-}
-
-function removeStyles(text){
-  var filteredText = text.split(regEx.TAGS);
-  return filteredText[( filteredText.length-1 ) / 2];
+  return addStyle(GET_COLOR(_color), content);
 }
 
 module.exports = {
@@ -45,5 +46,4 @@ module.exports = {
   bolden: bolden,
   underline: underline,
   color: color,
-  removeStyles: removeStyles,
 };

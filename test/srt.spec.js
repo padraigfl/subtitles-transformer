@@ -5,8 +5,8 @@ var expect = require('chai').expect;
 var io = require('../src/io');
 
 var srt = require('../src/srt');
-var parseSrt = srt.parse.parseSrt;
-var subArrayToSrt = srt.convert.subArrayToSrt;
+var parseSrt = srt.parse;
+var arrayToSrt = srt.convert;
 
 var styling = require('../src/srt/styling');
 var isStyled = styling.isStyled;
@@ -34,9 +34,11 @@ describe('SRT', function () {
       { start: 115708, end: 117750, text: [ 'Oooops' ] }
     ];
     it('should object to srt format', function () {
-      var result = subArrayToSrt([obj[0]]);
+      var result = arrayToSrt(obj);
       expect(result).to.equal(
-        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'
+        '1\n00:01:12,833 --> 00:01:19,000\nASDFGHJKL\n\n'+
+        '2\n00:01:42,458 --> 00:01:49,417\nSfheee idjfhsa\n\n'+
+        '3\n00:01:55,708 --> 00:01:57,750\nOooops\n\n'
       ); //rouding down and floating points makes direct comparisons potentially off by a millesecond
     });
   });
@@ -46,7 +48,7 @@ describe('SRT', function () {
     var underline = { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
     var twoStyle =  { start: 72833, end: 79000, text: [ '<b><u>ASDFGHJKL</u></b>' ] };
     var fontStyle =  { start: 72833, end: 79000, text: [ '<u>ASDFGHJKL</u>' ] };
-    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue"><b><a>ASDFGHJKL</u></b></font>' ] };
+    var threeStyleWithFont = { start: 72833, end: 79000, text: [ '<font color="blue">ASD<b><a>FGHJKL</u></b></font>' ] };
 
     it('isStyled', function () {
       expect(isStyled(noStyle.text)).to.equal(false);
@@ -69,23 +71,20 @@ describe('SRT', function () {
       });
     });
 
-    describe('removeStyles', function(){
+    // no longer export
+    xdescribe('removeStyles', function(){
       it('return as if when no styles', function(){
         expect(removeStyles(noStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removing basic styles', function(){
         expect(removeStyles(underline.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removing font color styles', function(){
         expect(removeStyles(fontStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removes multiple styles', function(){
         expect(removeStyles(twoStyle.text[0])).to.equal(noStyle.text[0]);
       });
-
       it('removes multiple styles inc. color', function(){
         expect(removeStyles(threeStyleWithFont.text[0])).to.equal(noStyle.text[0]);
       });

@@ -1,7 +1,5 @@
 'use strict';
 
-var buildStyles = require('./styling').buildStyleSection;
-
 var EVENT_ORDER = [
   'Marked',
   'Start',
@@ -15,7 +13,7 @@ var EVENT_ORDER = [
   'Text',
 ];
 
-function secondsToSsaTime(mseconds) {
+function msecToSsaTime(mseconds) {
   var padder;
   var split = [60*60*1000, 60*1000, 1000, 1].map( function (d, i) {
     var value = parseInt(mseconds / d);
@@ -47,7 +45,6 @@ function buildHardStyles() {
     'Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n' +
     'Style: primary, Tahoma, 24, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n' +
     'Style: secondary, Tahoma, 18, 16777215, 00000000, 00000000, 00000000, 0, 0, 1, 1, 0, 2, 30, 30, 10, 0, 0\n';
-
 }
 
 function buildEventsHeading() {
@@ -77,8 +74,8 @@ var dialogueBody = {
 
 function buildDialogue(text, start, end, style) {
   var dialogueObject = Object.assign(dialogueBody, {
-    Start: secondsToSsaTime(start),
-    End: secondsToSsaTime(end),
+    Start: msecToSsaTime(start),
+    End: msecToSsaTime(end),
     Style: style,
     Text: text,
   });
@@ -94,7 +91,6 @@ function buildDialogue(text, start, end, style) {
 function subToSsa(sub) {
   var primaryText = sub.text ? buildText(sub.text) : false;
   var secondaryText = sub.secondaryText ? buildText(sub.secondaryText) : false;
-
   var primaryDialogue = primaryText ? buildDialogue(primaryText, sub.start, sub.end, 'primary') : '';
   var secondaryDialogue = secondaryText ? buildDialogue(secondaryText, sub.start, sub.end, 'secondary') : '';
 
@@ -102,10 +98,14 @@ function subToSsa(sub) {
 }
 
 function subArrayToSsa(subArray, styles) {
+  if(!Array.isArray(subArray) && subArray.start && subArray.end && subArray.text){
+    subArray = [ subArray ];
+  }
+
   var heading = buildHeading();
 
   if (!styles) {
-    styles = buildStyles();
+    styles = buildHardStyles();
   }
 
   var events = buildEventsHeading() +
@@ -119,13 +119,11 @@ function subArrayToSsa(subArray, styles) {
 }
 
 module.exports = {
-  toSrt: subArrayToSsa,
-  secondsToSsaTime: secondsToSsaTime,
+  msecToSsaTime: msecToSsaTime,
   buildDialogue: buildDialogue,
   buildHeading: buildHeading,
   buildEventsHeading: buildEventsHeading,
   buildText: buildText,
   subToSsa: subToSsa,
   subArrayToSsa: subArrayToSsa,
-  buildHardStyles: buildHardStyles,
 };

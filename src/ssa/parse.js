@@ -1,6 +1,6 @@
 'use strict';
 
-function ssaTimeToSeconds(ssaTime){
+function ssaTimeToMsec(ssaTime){
   var scale = [60*60*1000, 60*1000, 1000, 10];
 
   return ssaTime.split(/[:.]/g)
@@ -16,9 +16,17 @@ function cleanFile(data) {
   return data.replace(/^\s+|\s+$/g, '');
 }
 
+// TODO improve handling of multiline breaks which occur in events
 function stripHeading(ssaFile) {
-  return ssaFile.split(/\n{2,}/)[2]
-    .replace(/\[events\]\s*\n/i, '');
+  var eventsSection = ssaFile.split(/[\r\n]{4,}|\n{2,}/).slice(2)
+    .join('\n');
+
+  eventsSection = eventsSection
+    .split(/[\n\s]*\[\s*Events\s*\][\n\s]*/i)
+    .join('')
+    .split('\n');
+
+  return eventsSection;
 }
 
 function parseLine(heading, line) {
@@ -44,32 +52,42 @@ function removeInlineFormatting(text){
   return text.split(/{\\[^}]*}/g).join('');
 }
 
-function pullEventData(line, format) {
+function pullEventData(line, format, omitInlineStyles) {
   var eventList = parseLine('dialogue', line);
 
+  var start = ssaTimeToMsec(eventList[format.startIdx]);
+  var end = ssaTimeToMsec(eventList[format.endIdx]);
+  var text = eventList.slice(format.textIdx).join(', ');
+
+  if (omitInlineStyles) {
+    text = removeInlineFormatting(text);
+  }
+
   return {
-    start: ssaTimeToSeconds(eventList[format.startIdx]),
-    end: ssaTimeToSeconds(eventList[format.endIdx]),
-    text: removeInlineFormatting(
-      eventList.slice(format.textIdx)
-        .join(', ')
-    ).split(/\\n/i),
+    start: start,
+    end: end,
+    text: text.split(/\\n/i),
   };
 }
 
-function parseSsa(data) {
-  var eventsString = stripHeading(cleanFile(data)).split('\n');
-  var eventFormat = pullEventFormat(eventsString.shift());
+function parseSsa(data, omitInlineStyles) {
+  var eventsList = stripHeading(cleanFile(data));
+  var eventFormat = pullEventFormat(eventsList.shift());
 
-  return eventsString.map(function(event) {
-    return pullEventData(event, eventFormat);
+  eventsList = eventsList.filter(function(event) {
+    if(event.split(':')[0].match(/Dialogue\s*/i)) {
+      return event;
+    }
+  });
+  return eventsList.map(function(event) {
+    return pullEventData(event, eventFormat, omitInlineStyles);
   });
 }
 
 module.exports = {
   parseSsa: parseSsa,
 
-  ssaTimeToSeconds: ssaTimeToSeconds,
+  ssaTimeToMsec: ssaTimeToMsec,
   parseLine: parseLine,
   stripHeading: stripHeading,
 };

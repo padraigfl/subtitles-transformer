@@ -2,12 +2,11 @@
 'use strict';
 
 var expect = require('chai').expect;
-var ssa = require('../src/ssa');
 var io = require('../src/io');
-var style = require('../src/ssa/styling');
+var styler = require('../src/ssa/styling');
 
-var parse = ssa.parse;
-var convert = ssa.convert;
+var parse = require('../src/ssa/parse');
+var convert = require('../src/ssa/convert');
 
 describe('SSA:', function() {
   describe('parse', function() {
@@ -24,12 +23,12 @@ describe('SSA:', function() {
     });
 
     it('ssaTimeToSeconds', function() {
-      expect(parse.ssaTimeToSeconds('01:01:01.01')).to.equal(3661010);
+      expect(parse.ssaTimeToMsec('01:01:01.01')).to.equal(3661010);
     });
 
     it('stripHeading', function() {
       var file = io.read('./test/dummySubs/3Lines.ssa');
-      var strippedLines = parse.stripHeading(file).split('\n');
+      var strippedLines = parse.stripHeading(file);
 
       expect(strippedLines[0]).to.equal('Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, PrimaryEffect, Text');
       expect(strippedLines[1]).to.equal('Dialogue: Marked=0,00:01:12.83,00:01:19.00,HardDefault,NTP,0000,0000,0000,!Effect,TestStuff, TestAgain');
@@ -53,7 +52,7 @@ describe('SSA:', function() {
       ];
       var file = io.read('./test/dummySubs/inlineStyle.ssa');
 
-      expect(parse.parseSsa(file)).to.deep.equal(expected);
+      expect(parse.parseSsa(file, true)).to.deep.equal(expected);
     });
 
   });
@@ -67,7 +66,7 @@ describe('SSA:', function() {
       'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,' +
       'Fontname,PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
       'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-      'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
+      'Style: secondary,3,0,0,0,10,10,10,Times New Roman,16777215,16777215,16777215,0,6,12,1,1,1\n';
 
     var dialoguePrefix1 = 'Dialogue: Marked=0,';
     var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
@@ -81,8 +80,8 @@ describe('SSA:', function() {
     var style = 'style';
 
     it('secondsToSsaTime', function() {
-      expect(convert.secondsToSsaTime(3901560)).to.equal('01:05:01.56');
-      expect(convert.secondsToSsaTime(7421501)).to.equal('02:03:41.50');
+      expect(convert.msecToSsaTime(3901560)).to.equal('01:05:01.56');
+      expect(convert.msecToSsaTime(7421501)).to.equal('02:03:41.50');
     });
     it('buildHeading', function() {
       expect(convert.buildHeading()).to.equal(heading);
@@ -109,7 +108,7 @@ describe('SSA:', function() {
       );
     });
     it('subArrayToSsa', function() {
-      expect(convert.subArrayToSsa(obj)).to.equal(
+      expect(convert.subArrayToSsa(obj, styler())).to.equal(
         heading + '\n' + styles + '\n' + convert.buildEventsHeading() +
         dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n' +
         dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text[0] + '\n' +
@@ -125,9 +124,9 @@ describe('SSA:', function() {
         'Format: Name,BorderStyle,Shadow,AlphaLevel,Encoding,MarginL,MarginR,MarginV,Fontname,' +
         'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
         'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
-        'Style: secondary,1,0,0,0,10,10,10,Times New Roman,255,255,255,65535,6,16,1,1,1\n';
+        'Style: secondary,3,0,0,0,10,10,10,Times New Roman,16777215,16777215,16777215,0,6,12,1,1,1\n';
 
-      expect(style.buildStyleSection()).to.equal(result);
+      expect(styler()).to.equal(result);
     });
     it('reverts to defaults when passed junk', function() {
       var result = '[V4 Styles]\n' +
@@ -135,8 +134,8 @@ describe('SSA:', function() {
         'PrimaryColour,SecondaryColour,TertiaryColour,BackColour,Alignment,Fontsize,Bold,Italic,Outline\n' +
         'Style: primary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n' +
         'Style: secondary,0,0,0,0,30,30,10,Tahoma,16777215,16777215,16777215,0,2,24,0,0,0\n';
-      expect(style.buildStyleSection('wrongformat', {})).to.equal(result);
-      expect(style.buildStyleSection(3, {})).to.equal(result);
+      expect(styler('wrongformat', {})).to.equal(result);
+      expect(styler(3, {})).to.equal(result);
     });
   });
 });
